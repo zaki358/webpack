@@ -1,5 +1,7 @@
 //outputのパスを相対パスで指定するためにpathライブラリを読み込む
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
    entry: './src/index.js',
@@ -15,7 +17,7 @@ module.exports = {
             test: /\.css/,
             use: [
                {
-                  loader: 'style-loader',
+                  loader: MiniCssExtractPlugin.loader,
                },
                {
                   loader: 'css-loader',
@@ -24,4 +26,11 @@ module.exports = {
          },
       ],
    },
+   plugins: [
+      new MiniCssExtractPlugin(),
+      new HtmlWebpackPlugin({
+         //このhtmlファイルが親みたいなもので上記のビルドされた内容（プラグインやライブラリ）が読み込まれる
+         template: './src/index.html',
+      }),
+   ],
 }
