@@ -38,16 +38,36 @@ module.exports = {
                },
             ],
          },
+         {
+            test: /\.pug/,
+            use: [
+               {
+                  loader: 'html-loader',
+               },
+               {
+                  loader: 'pug-html-loader',
+                  options: {
+                    pretty: true,
+                  },
+               },
+            ],
+         },
       ],
    },
    plugins: [
       new MiniCssExtractPlugin({
+        //ビルドされたほうの名前
          filename: './css/main.css',
       }),
+      //このhtmlファイルが親みたいなもので上記のビルドされた内容（プラグインやライブラリ）が読み込まれる
       new HtmlWebpackPlugin({
-         //このhtmlファイルが親みたいなもので上記のビルドされた内容（プラグインやライブラリ）が読み込まれる
-         template: './src/templates/index.html',
+         template: './src/templates/index.pug',
+         filename: 'index.html',
       }),
+      new HtmlWebpackPlugin({
+        template: './src/templates/access.pug',
+        filename: 'access.html',
+     }),
       new CleanWebpackPlugin(),
    ],
 }
