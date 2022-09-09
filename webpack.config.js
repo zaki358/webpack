@@ -5,16 +5,31 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
-   entry: './src/js/main.js',
-   output: {
+  devtool: 'source-map',
+  entry: './src/js/main.js',
+  output: {
       path: path.resolve(__dirname, './dist'),
       filename: './js/main.js'
-   },
+  },
 
    //下から上に適用されるため書き方に注意
-   module: {
+  module: {
       rules: [
-         {
+        {
+          test: /\.js/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  ['@babel/preset-env', { 'targets': '> 30%, not dead'}],
+                ],
+              },
+            },
+          ],
+        },
+        {
             test: /\.css/,
             use: [
                {
@@ -68,6 +83,10 @@ module.exports = {
         template: './src/templates/access.pug',
         filename: 'access.html',
      }),
+     new HtmlWebpackPlugin({
+      template: './src/templates/members/taro.pug',
+      filename: 'members/taro.html',
+   }),
       new CleanWebpackPlugin(),
    ],
 }
